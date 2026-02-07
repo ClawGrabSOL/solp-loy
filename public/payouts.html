@@ -306,6 +306,47 @@
         }
 
         renderLedger();
+
+        // Simulate live updates
+        function addNewTransaction() {
+            const newTasks = [
+                'API Integration', 'Token Analysis', 'Marketing Copy', 'Bug Fix', 
+                'Documentation', 'Data Scraping', 'UI Review', 'Translation'
+            ];
+            const cryptos = [
+                { currency: 'sol', amount: (Math.random() * 5 + 0.5).toFixed(2) + ' SOL', icon: 'https://cryptologos.cc/logos/solana-sol-logo.png' },
+                { currency: 'eth', amount: (Math.random() * 0.3 + 0.05).toFixed(3) + ' ETH', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' },
+                { currency: 'usdc', amount: Math.floor(Math.random() * 200 + 50) + ' USDC', icon: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png' },
+            ];
+            
+            const task = newTasks[Math.floor(Math.random() * newTasks.length)];
+            const crypto = cryptos[Math.floor(Math.random() * cryptos.length)];
+            const txHash = Math.random().toString(36).substring(2, 6) + '...' + Math.random().toString(36).substring(2, 6);
+            
+            const newTx = {
+                task,
+                amount: crypto.amount,
+                crypto: crypto.currency,
+                icon: crypto.icon,
+                tx: txHash,
+                time: 'Just now'
+            };
+            
+            transactions.unshift(newTx);
+            if (transactions.length > 10) transactions.pop();
+            
+            // Update times
+            transactions.forEach((tx, i) => {
+                if (i === 0) tx.time = 'Just now';
+                else if (i === 1) tx.time = '1 min ago';
+                else tx.time = (i * 2 + Math.floor(Math.random() * 3)) + ' min ago';
+            });
+            
+            renderLedger();
+        }
+
+        // Add new transaction every 8-15 seconds
+        setInterval(addNewTransaction, Math.random() * 7000 + 8000);
     </script>
 </body>
 </html>

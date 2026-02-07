@@ -31,10 +31,18 @@
             color: var(--text-secondary);
         }
         
+        .tasks-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
         .tasks-filters {
             display: flex;
             gap: 12px;
-            margin-top: 24px;
             flex-wrap: wrap;
         }
         
@@ -54,6 +62,23 @@
             background: rgba(153, 69, 255, 0.1);
             border-color: rgba(153, 69, 255, 0.3);
             color: var(--text-primary);
+        }
+        
+        .create-task-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .create-task-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(153, 69, 255, 0.3);
         }
         
         .tasks-grid {
@@ -77,6 +102,11 @@
             border-color: rgba(153, 69, 255, 0.3);
             transform: translateY(-4px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .task-card.claimed {
+            opacity: 0.6;
+            pointer-events: none;
         }
         
         .task-header {
@@ -108,6 +138,10 @@
             height: 6px;
             border-radius: 50%;
             background: #00d68f;
+        }
+        
+        .task-status-dot.claimed {
+            background: #f7931a;
         }
         
         .task-card h3 {
@@ -163,6 +197,311 @@
             transform: scale(1.05);
         }
         
+        .claim-btn.claimed {
+            background: var(--bg-card-hover);
+            color: var(--text-muted);
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlide 0.3s ease;
+        }
+        
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            padding: 24px;
+        }
+        
+        .task-detail {
+            margin-bottom: 24px;
+        }
+        
+        .task-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .task-detail h4 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .task-detail p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+        
+        .task-meta {
+            display: flex;
+            gap: 24px;
+            padding: 16px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .meta-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .meta-value {
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .meta-value img {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group textarea:focus {
+            border-color: var(--gradient-mid);
+        }
+        
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--gradient-mid);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(153, 69, 255, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Wallet Connection */
+        .wallet-required {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .wallet-required p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        
+        .connect-wallet-btn {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        /* Success State */
+        .success-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .success-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        
+        .success-state h4 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .success-state p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 3000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast.success {
+            border-color: rgba(0, 214, 143, 0.3);
+        }
+        
+        .toast-icon {
+            font-size: 24px;
+        }
+        
+        .toast-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .toast-content p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
         .empty-state {
             text-align: center;
             padding: 80px 40px;
@@ -173,6 +512,26 @@
             font-size: 24px;
             margin-bottom: 8px;
             color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .tasks-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .tasks-grid {
+                grid-template-columns: 1fr;
+                padding: 0 20px 40px;
+            }
+            
+            .tasks-header {
+                padding: 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -199,12 +558,15 @@
         <div class="tasks-header">
             <h1>Available <span class="gradient-text">Tasks</span></h1>
             <p>Browse open tasks and start earning crypto</p>
-            <div class="tasks-filters">
-                <button class="filter-btn active">All Tasks</button>
-                <button class="filter-btn">💻 Development</button>
-                <button class="filter-btn">✍️ Content</button>
-                <button class="filter-btn">📈 Analysis</button>
-                <button class="filter-btn">🎨 Design</button>
+            <div class="tasks-actions">
+                <div class="tasks-filters">
+                    <button class="filter-btn active" data-filter="all">All Tasks</button>
+                    <button class="filter-btn" data-filter="Development">💻 Development</button>
+                    <button class="filter-btn" data-filter="Content">✍️ Content</button>
+                    <button class="filter-btn" data-filter="Analysis">📈 Analysis</button>
+                    <button class="filter-btn" data-filter="Design">🎨 Design</button>
+                </div>
+                <button class="create-task-btn" onclick="openCreateModal()">+ Create Task</button>
             </div>
         </div>
 
@@ -212,6 +574,89 @@
             <!-- Tasks will be loaded here -->
         </div>
     </main>
+
+    <!-- Claim Task Modal -->
+    <div class="modal-overlay" id="claim-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Claim Task</h3>
+                <button class="modal-close" onclick="closeModal('claim-modal')">&times;</button>
+            </div>
+            <div class="modal-body" id="claim-modal-body">
+                <!-- Content injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Work Modal -->
+    <div class="modal-overlay" id="submit-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Submit Work</h3>
+                <button class="modal-close" onclick="closeModal('submit-modal')">&times;</button>
+            </div>
+            <div class="modal-body" id="submit-modal-body">
+                <!-- Content injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Task Modal -->
+    <div class="modal-overlay" id="create-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Create New Task</h3>
+                <button class="modal-close" onclick="closeModal('create-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="create-task-form">
+                    <div class="form-group">
+                        <label>Task Title</label>
+                        <input type="text" id="task-title" placeholder="e.g., Write documentation for DeFi protocol" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="task-description" placeholder="Describe what needs to be done in detail..." required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="task-category" required>
+                                <option value="">Select category</option>
+                                <option value="Development">💻 Development</option>
+                                <option value="Content">✍️ Content</option>
+                                <option value="Analysis">📈 Analysis</option>
+                                <option value="Design">🎨 Design</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Reward Amount</label>
+                            <input type="number" id="task-reward" placeholder="0.00" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Currency</label>
+                        <select id="task-currency" required>
+                            <option value="SOL">SOL - Solana</option>
+                            <option value="ETH">ETH - Ethereum</option>
+                            <option value="USDC">USDC</option>
+                            <option value="BTC">BTC - Bitcoin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">Create Task</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="toast-icon">✅</span>
+        <div class="toast-content">
+            <h4 id="toast-title">Success!</h4>
+            <p id="toast-message">Task claimed successfully</p>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-container">
@@ -226,99 +671,132 @@
     </footer>
 
     <script>
-        const sampleTasks = [
+        // Wallet state
+        let wallet = {
+            connected: false,
+            address: null
+        };
+
+        // Tasks data
+        let tasks = [
             {
                 id: 1,
                 title: 'Write DeFi Protocol Documentation',
-                description: 'Create comprehensive documentation for a new DeFi lending protocol. Include user guides and technical specs.',
+                description: 'Create comprehensive documentation for a new DeFi lending protocol. Include user guides, API documentation, and technical specifications for developers.',
                 category: 'Content',
-                reward: '2.5 SOL',
-                crypto: 'sol',
+                reward: 2.5,
+                currency: 'SOL',
                 icon: 'https://cryptologos.cc/logos/solana-sol-logo.png',
-                status: 'Open'
+                status: 'open',
+                deadline: '3 days'
             },
             {
                 id: 2,
                 title: 'Smart Contract Security Review',
-                description: 'Audit a Solana Rust program for vulnerabilities. Provide detailed report with recommendations.',
+                description: 'Audit a Solana Rust program for vulnerabilities. Provide detailed report with recommendations and severity ratings for any issues found.',
                 category: 'Development',
-                reward: '0.5 ETH',
-                crypto: 'eth',
+                reward: 0.5,
+                currency: 'ETH',
                 icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
-                status: 'Open'
+                status: 'open',
+                deadline: '5 days'
             },
             {
                 id: 3,
                 title: 'Market Analysis Report',
-                description: 'Analyze top 50 memecoins by market cap. Include sentiment analysis and trend predictions.',
+                description: 'Analyze top 50 memecoins by market cap. Include sentiment analysis, trend predictions, and risk assessment for each token.',
                 category: 'Analysis',
-                reward: '300 USDC',
-                crypto: 'usdc',
+                reward: 300,
+                currency: 'USDC',
                 icon: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png',
-                status: 'Open'
+                status: 'open',
+                deadline: '2 days'
             },
             {
                 id: 4,
                 title: 'Trading Bot Development',
-                description: 'Build a Solana sniper bot with customizable parameters and rug detection.',
+                description: 'Build a Solana sniper bot with customizable parameters and rug detection. Must include stop-loss and take-profit functionality.',
                 category: 'Development',
-                reward: '8.0 SOL',
-                crypto: 'sol',
+                reward: 8.0,
+                currency: 'SOL',
                 icon: 'https://cryptologos.cc/logos/solana-sol-logo.png',
-                status: 'Open'
+                status: 'open',
+                deadline: '7 days'
             },
             {
                 id: 5,
                 title: 'NFT Collection Metadata',
-                description: 'Generate unique metadata and traits for a 10K NFT collection with rarity tiers.',
+                description: 'Generate unique metadata and traits for a 10K NFT collection with rarity tiers. Include JSON files and trait distribution spreadsheet.',
                 category: 'Content',
-                reward: '1.5 SOL',
-                crypto: 'sol',
+                reward: 1.5,
+                currency: 'SOL',
                 icon: 'https://cryptologos.cc/logos/solana-sol-logo.png',
-                status: 'Open'
+                status: 'open',
+                deadline: '4 days'
             },
             {
                 id: 6,
                 title: 'UI/UX Design Review',
-                description: 'Review and provide improvement suggestions for a DEX interface. Include wireframes.',
+                description: 'Review and provide improvement suggestions for a DEX interface. Include wireframes for proposed changes and accessibility audit.',
                 category: 'Design',
-                reward: '0.2 ETH',
-                crypto: 'eth',
+                reward: 0.2,
+                currency: 'ETH',
                 icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
-                status: 'Open'
+                status: 'open',
+                deadline: '3 days'
             }
         ];
 
-        function renderTasks(tasks) {
+        // My claimed tasks
+        let myTasks = [];
+
+        // Currency icons
+        const currencyIcons = {
+            'SOL': 'https://cryptologos.cc/logos/solana-sol-logo.png',
+            'ETH': 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
+            'USDC': 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png',
+            'BTC': 'https://cryptologos.cc/logos/bitcoin-btc-logo.png'
+        };
+
+        // Render tasks
+        function renderTasks(filter = 'all') {
             const grid = document.getElementById('tasks-grid');
+            let filteredTasks = tasks;
             
-            if (tasks.length === 0) {
+            if (filter !== 'all') {
+                filteredTasks = tasks.filter(t => t.category === filter);
+            }
+            
+            if (filteredTasks.length === 0) {
                 grid.innerHTML = `
-                    <div class="empty-state">
+                    <div class="empty-state" style="grid-column: 1 / -1;">
                         <h3>No tasks available</h3>
-                        <p>Check back soon for new opportunities!</p>
+                        <p>Check back soon or create your own task!</p>
                     </div>
                 `;
                 return;
             }
             
-            grid.innerHTML = tasks.map(task => `
-                <div class="task-card">
+            grid.innerHTML = filteredTasks.map(task => `
+                <div class="task-card ${task.status === 'claimed' ? 'claimed' : ''}" data-id="${task.id}">
                     <div class="task-header">
                         <span class="task-category">${task.category}</span>
                         <span class="task-status">
-                            <span class="task-status-dot"></span>
-                            ${task.status}
+                            <span class="task-status-dot ${task.status === 'claimed' ? 'claimed' : ''}"></span>
+                            ${task.status === 'open' ? 'Open' : 'Claimed'}
                         </span>
                     </div>
                     <h3>${task.title}</h3>
-                    <p>${task.description}</p>
+                    <p>${task.description.substring(0, 100)}...</p>
                     <div class="task-footer">
                         <div class="task-reward">
-                            <img src="${task.icon}" alt="${task.crypto}">
-                            <span>${task.reward}</span>
+                            <img src="${task.icon}" alt="${task.currency}">
+                            <span>${task.reward} ${task.currency}</span>
                         </div>
-                        <button class="claim-btn">Claim Task</button>
+                        ${task.status === 'open' 
+                            ? `<button class="claim-btn" onclick="openClaimModal(${task.id})">Claim Task</button>`
+                            : `<button class="claim-btn claimed">Claimed</button>`
+                        }
                     </div>
                 </div>
             `).join('');
@@ -329,18 +807,286 @@
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
-                const filter = btn.textContent.trim();
-                if (filter === 'All Tasks') {
-                    renderTasks(sampleTasks);
-                } else {
-                    const category = filter.split(' ').pop();
-                    renderTasks(sampleTasks.filter(t => t.category === category));
+                renderTasks(btn.dataset.filter);
+            });
+        });
+
+        // Modal functions
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
                 }
             });
         });
 
-        renderTasks(sampleTasks);
+        // Open claim modal
+        function openClaimModal(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            const modalBody = document.getElementById('claim-modal-body');
+            
+            if (!wallet.connected) {
+                modalBody.innerHTML = `
+                    <div class="task-detail">
+                        <h4>${task.title}</h4>
+                        <p>${task.description}</p>
+                    </div>
+                    <div class="task-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Reward</span>
+                            <span class="meta-value">
+                                <img src="${task.icon}" alt="${task.currency}">
+                                ${task.reward} ${task.currency}
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">${task.deadline}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Category</span>
+                            <span class="meta-value">${task.category}</span>
+                        </div>
+                    </div>
+                    <div class="wallet-required">
+                        <p>Connect your wallet to claim this task</p>
+                        <button class="connect-wallet-btn" onclick="connectWallet(${taskId})">Connect Wallet</button>
+                    </div>
+                `;
+            } else {
+                modalBody.innerHTML = `
+                    <div class="task-detail">
+                        <h4>${task.title}</h4>
+                        <p>${task.description}</p>
+                    </div>
+                    <div class="task-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Reward</span>
+                            <span class="meta-value">
+                                <img src="${task.icon}" alt="${task.currency}">
+                                ${task.reward} ${task.currency}
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">${task.deadline}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Category</span>
+                            <span class="meta-value">${task.category}</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 20px;">
+                        By claiming this task, you agree to complete it within the deadline. Your work will be verified by AI before payment is released.
+                    </p>
+                    <button class="submit-btn" onclick="claimTask(${taskId})">Claim Task</button>
+                `;
+            }
+            
+            openModal('claim-modal');
+        }
+
+        // Connect wallet (simulated)
+        async function connectWallet(taskId) {
+            // Simulate wallet connection
+            const btn = document.querySelector('.connect-wallet-btn');
+            btn.textContent = 'Connecting...';
+            btn.disabled = true;
+
+            // Check for Phantom
+            if (window.phantom?.solana) {
+                try {
+                    const resp = await window.phantom.solana.connect();
+                    wallet.connected = true;
+                    wallet.address = resp.publicKey.toString();
+                    showToast('Wallet Connected', `Connected: ${wallet.address.slice(0, 4)}...${wallet.address.slice(-4)}`);
+                    closeModal('claim-modal');
+                    setTimeout(() => openClaimModal(taskId), 300);
+                    return;
+                } catch (err) {
+                    console.log('Phantom connection failed');
+                }
+            }
+
+            // Simulate connection for demo
+            await new Promise(r => setTimeout(r, 1500));
+            wallet.connected = true;
+            wallet.address = 'Demo' + Math.random().toString(36).substring(2, 8);
+            
+            showToast('Wallet Connected', `Demo wallet connected`);
+            closeModal('claim-modal');
+            setTimeout(() => openClaimModal(taskId), 300);
+        }
+
+        // Claim task
+        function claimTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            task.status = 'claimed';
+            myTasks.push(task);
+            
+            closeModal('claim-modal');
+            showToast('Task Claimed!', `You have ${task.deadline} to complete this task`);
+            renderTasks(document.querySelector('.filter-btn.active').dataset.filter);
+            
+            // Open submit modal after a delay
+            setTimeout(() => openSubmitModal(taskId), 1000);
+        }
+
+        // Open submit modal
+        function openSubmitModal(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            const modalBody = document.getElementById('submit-modal-body');
+            modalBody.innerHTML = `
+                <div class="task-detail">
+                    <div class="task-detail-header">
+                        <h4>${task.title}</h4>
+                        <span class="task-category">${task.category}</span>
+                    </div>
+                </div>
+                <form id="submit-work-form" onsubmit="submitWork(event, ${taskId})">
+                    <div class="form-group">
+                        <label>Your Submission</label>
+                        <textarea id="submission-content" placeholder="Paste your completed work here or provide a link to your deliverables..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Additional Notes (optional)</label>
+                        <textarea id="submission-notes" placeholder="Any notes or comments about your submission..." style="min-height: 80px;"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit for Review</button>
+                </form>
+            `;
+            
+            openModal('submit-modal');
+        }
+
+        // Submit work
+        async function submitWork(e, taskId) {
+            e.preventDefault();
+            
+            const content = document.getElementById('submission-content').value;
+            const btn = document.querySelector('#submit-work-form .submit-btn');
+            
+            btn.textContent = 'Submitting...';
+            btn.disabled = true;
+
+            // Simulate AI verification
+            await new Promise(r => setTimeout(r, 2000));
+            
+            const task = tasks.find(t => t.id === taskId);
+            
+            // Show success state
+            document.getElementById('submit-modal-body').innerHTML = `
+                <div class="success-state">
+                    <div class="success-icon">🎉</div>
+                    <h4>Work Submitted!</h4>
+                    <p>AI is verifying your submission. Payment will be released upon approval.</p>
+                    <div class="task-meta" style="justify-content: center; margin-top: 24px;">
+                        <div class="meta-item" style="align-items: center;">
+                            <span class="meta-label">Reward</span>
+                            <span class="meta-value">
+                                <img src="${task.icon}" alt="${task.currency}">
+                                ${task.reward} ${task.currency}
+                            </span>
+                        </div>
+                    </div>
+                    <button class="submit-btn" style="margin-top: 24px;" onclick="closeModal('submit-modal')">Done</button>
+                </div>
+            `;
+
+            // Simulate payment after delay
+            setTimeout(() => {
+                showToast('Payment Received! 💰', `${task.reward} ${task.currency} sent to your wallet`);
+            }, 3000);
+        }
+
+        // Create task modal
+        function openCreateModal() {
+            openModal('create-modal');
+        }
+
+        // Create task form
+        document.getElementById('create-task-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('task-title').value;
+            const description = document.getElementById('task-description').value;
+            const category = document.getElementById('task-category').value;
+            const reward = parseFloat(document.getElementById('task-reward').value);
+            const currency = document.getElementById('task-currency').value;
+            
+            const btn = document.querySelector('#create-task-form .submit-btn');
+            btn.textContent = 'Creating...';
+            btn.disabled = true;
+
+            await new Promise(r => setTimeout(r, 1500));
+            
+            const newTask = {
+                id: tasks.length + 1,
+                title,
+                description,
+                category,
+                reward,
+                currency,
+                icon: currencyIcons[currency],
+                status: 'open',
+                deadline: '7 days'
+            };
+            
+            tasks.unshift(newTask);
+            
+            closeModal('create-modal');
+            showToast('Task Created!', 'Your task is now live');
+            renderTasks('all');
+            
+            // Reset form
+            document.getElementById('create-task-form').reset();
+            btn.textContent = 'Create Task';
+            btn.disabled = false;
+        });
+
+        // Toast notification
+        function showToast(title, message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-message').textContent = message;
+            
+            toast.classList.add('show', 'success');
+            
+            setTimeout(() => {
+                toast.classList.remove('show', 'success');
+            }, 4000);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(m => {
+                    m.classList.remove('active');
+                });
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Initial render
+        renderTasks();
     </script>
 </body>
 </html>
